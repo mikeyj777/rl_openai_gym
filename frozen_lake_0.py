@@ -10,7 +10,7 @@ action_space_size = env.action_space.n
 state_space_size = env.observation_space.n
 
 q_table = np.zeros((state_space_size, action_space_size))
-print(q_table)
+# print(q_table)
 
 # tunable parameters
 num_episodes = 10000
@@ -28,7 +28,7 @@ rewards_all_episodes = []
 
 # Q-Learning Algo
 for episode in range(num_episodes):
-    state = env.reset()
+    state = env.reset()[0]
 
     done = False
     rewards_current_episode = 0
@@ -42,7 +42,13 @@ for episode in range(num_episodes):
         else:
             action = env.action_space.sample()
         
-        new_state, reward, done, info = env.step(action)
+        new_state, reward, terminated, truncated, info = env.step(action)
+
+        done = terminated or truncated
+
+
+        if reward > 0:
+            apple = 1
 
         # update q-table
         q_table[state, action] = q_table[state, action] * (1 - learning_rate) + \
@@ -57,6 +63,11 @@ for episode in range(num_episodes):
     exploration_rate = min_exploration_rate + (max_exploration_rate - min_exploration_rate) * np.exp(-exploration_decay_rate * episode)
 
     rewards_all_episodes.append(rewards_current_episode)
+
+    # print(f'***********\n\nepisode: {episode} | step: {step}\n\n**********')
+    # print(f'{q_table}\n**********\n\n')
+
+    
 
 rewards_per_thousand_episodes = np.split(np.array(rewards_all_episodes), num_episodes // 1000)
 count = 1000
