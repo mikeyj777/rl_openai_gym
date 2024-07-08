@@ -67,16 +67,4 @@ for episode in range(num_episodes):
     # print(f'***********\n\nepisode: {episode} | step: {step}\n\n**********')
     # print(f'{q_table}\n**********\n\n')
 
-    
-
-rewards_per_thousand_episodes = np.split(np.array(rewards_all_episodes), num_episodes // 1000)
-count = 1000
-print('*********Average reward per each thousand episodes*************')
-for r in rewards_per_thousand_episodes:
-    print(f'count: {count}.  ave:  {sum(r / 1000)}')
-    count += 1000
-
-print('\n\n******Updated Q-Table')
-print(q_table)
-
-apple = 1
+np.savetxt(fname='data/frozen_lake_q_table.csv', X=q_table, delimiter=',')
