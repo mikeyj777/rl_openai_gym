@@ -1,0 +1,3 @@
+intialize git and connect to existing github repo.ps1
+venv
+*.pyc
